@@ -1,0 +1,77 @@
+[gd_scene load_steps=15 format=3 uid="uid://b6ouxg3wb3rhk"]
+
+[ext_resource type="Texture2D" uid="uid://dcqcjftqovygy" path="res://Textures/forrest_ground_01_4k.blend/textures/forrest_ground_01_diff_4k.jpg" id="1_nf51g"]
+[ext_resource type="Script" path="res://Levels/FinishPad.gd" id="1_vnrt8"]
+[ext_resource type="Texture2D" uid="uid://drtdndojk8ovi" path="res://Textures/lichen_rock_4k.blend/textures/lichen_rock_diff_4k.jpg" id="2_6aifn"]
+[ext_resource type="PackedScene" uid="uid://b5kepqbl617no" path="res://player.tscn" id="2_gw7ur"]
+[ext_resource type="PackedScene" uid="uid://d1fuqxmr3c4y6" path="res://moving_hazard.tscn" id="3_7xqrk"]
+[ext_resource type="AudioStream" uid="uid://qjecoe7enf8n" path="res://Audio/space-72679.mp3" id="4_mngka"]
+[ext_resource type="PackedScene" uid="uid://ba5xkkq4gb2pe" path="res://Background.tscn" id="7_fru5j"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wpsxu"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_a1s0e"]
+sky_material = SubResource("ProceduralSkyMaterial_wpsxu")
+
+[sub_resource type="Environment" id="Environment_svu63"]
+background_mode = 2
+sky = SubResource("Sky_a1s0e")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bthrm"]
+albedo_texture = ExtResource("1_nf51g")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8r3d"]
+albedo_color = Color(0.6, 0.427451, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_waw51"]
+albedo_texture = ExtResource("2_6aifn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe5s5"]
+albedo_color = Color(1, 0.0470588, 1, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_svu63")
+
+[node name="LunchPad" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0.2, 0)
+material_override = SubResource("StandardMaterial3D_bthrm")
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("StandardMaterial3D_o8r3d")
+
+[node name="FinishPad" type="CSGBox3D" parent="." groups=["Goal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.20853, 0.076468)
+material_override = SubResource("StandardMaterial3D_waw51")
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("StandardMaterial3D_xe5s5")
+script = ExtResource("1_vnrt8")
+file_path = "res://Levels/Level_5.tscn"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.978148, 0.207912, 0, -0.207912, 0.978148, 0, 5, 11)
+
+[node name="Player" parent="." instance=ExtResource("2_gw7ur")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46091, 1.54051, -0.0493984)
+
+[node name="MovingHazard" parent="." instance=ExtResource("3_7xqrk")]
+transform = Transform3D(0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, 1, 0, 0)
+destination = Vector3(0, 3, 0)
+duration = 3.0
+
+[node name="Background" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_mngka")
+volume_db = -9.333
+autoplay = true
+
+[node name="Platform2" parent="." instance=ExtResource("7_fru5j")]

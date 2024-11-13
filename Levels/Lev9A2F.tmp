@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://dncbovg4xtc54"]
+
+[ext_resource type="Script" path="res://Levels/FinishPad.gd" id="1_m5evr"]
+[ext_resource type="PackedScene" uid="uid://b5kepqbl617no" path="res://player.tscn" id="1_qgv8o"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wpsxu"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_a1s0e"]
+sky_material = SubResource("ProceduralSkyMaterial_wpsxu")
+
+[sub_resource type="Environment" id="Environment_svu63"]
+background_mode = 2
+sky = SubResource("Sky_a1s0e")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6wo2"]
+albedo_color = Color(0, 0.0784314, 0.0117647, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8r3d"]
+albedo_color = Color(0.6, 0.427451, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe5s5"]
+albedo_color = Color(1, 0.0470588, 1, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_svu63")
+
+[node name="Platform" type="CSGBox3D" parent="." groups=["Hazard"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.721, -4, 0)
+use_collision = true
+size = Vector3(30, 8, 5)
+material = SubResource("StandardMaterial3D_g6wo2")
+
+[node name="LunchPad" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0.2, 0)
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("StandardMaterial3D_o8r3d")
+
+[node name="FinishPad" type="CSGBox3D" parent="." groups=["Goal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.20853, 0.076468)
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("StandardMaterial3D_xe5s5")
+script = ExtResource("1_m5evr")
+file_path = "res://Levels/Level_2.tscn"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.978148, 0.207912, 0, -0.207912, 0.978148, 1, 4, 11)
+
+[node name="Player" parent="." instance=ExtResource("1_qgv8o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46091, 1.54051, -0.0493984)
+thrust = 1000.0
+torque_thrust = 100.0
